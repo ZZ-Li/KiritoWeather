@@ -4,8 +4,8 @@
     <version value="1"/>
 
     <list>
-        <mapping class="com.kiritowather.android.db.Province"/>
-        <mapping class="com.kiritowather.android.db.City"/>
-        <mapping class="com.kiritowather.android.db.County"/>
+        <mapping class="com.kiritoweather.android.db.Province"/>
+        <mapping class="com.kiritoweather.android.db.City"/>
+        <mapping class="com.kiritoweather.android.db.County"/>
     </list>
 </litepal>
