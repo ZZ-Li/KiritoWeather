@@ -1,4 +1,4 @@
-package com.kiritoweather.administrator.android;
+package com.kiritoweather.android;
 
 import org.junit.Test;
 
