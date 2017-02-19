@@ -1,3 +1,4 @@
 <resources>
-    <string name="app_name">Kirito Weather</string>
+    <string name="app_nameEn">Kirito Weather</string>
+    <string name="app_name">谷和天气</string>
 </resources>
