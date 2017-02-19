@@ -1,4 +1,4 @@
-package com.example.administrator.kiritoweather;
+package com.kiritoweather.administrator.android;
 
 import android.content.Context;
 import android.support.test.InstrumentationRegistry;
