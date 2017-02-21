@@ -21,9 +21,6 @@ import okhttp3.Response;
 
 public class AutoUpdateService extends Service {
 
-    public AutoUpdateService() {
-    }
-
     @Override
     public IBinder onBind(Intent intent) {
         // TODO: Return the communication channel to the service.
@@ -85,17 +82,17 @@ public class AutoUpdateService extends Service {
         String requestBingPic = "http://guolin.tech/api/bing_pic";
         HttpUtil.sendOKHttpRequest(requestBingPic, new Callback() {
             @Override
-            public void onFailure(Call call, IOException e) {
-                e.printStackTrace();
-            }
-
-            @Override
             public void onResponse(Call call, Response response) throws IOException {
                 String bingPic = response.body().toString();
                 SharedPreferences.Editor editor = PreferenceManager
                         .getDefaultSharedPreferences(AutoUpdateService.this).edit();
                 editor.putString("bing_pic", bingPic);
                 editor.apply();
+            }
+
+            @Override
+            public void onFailure(Call call, IOException e) {
+                e.printStackTrace();
             }
         });
     }

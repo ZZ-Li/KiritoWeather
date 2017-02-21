@@ -65,7 +65,7 @@ public class WeatherActivity extends AppCompatActivity {
 
     private TextView sportText;
 
-    private String mWeatherId;
+    public String mWeatherId;
 
     private ImageView bingPicImg;
 
@@ -116,6 +116,7 @@ public class WeatherActivity extends AppCompatActivity {
             }
         });
         String bingPic = prefs.getString("bing_pic", null);
+        Log.d("WeatherActivity",bingPic);
         if (bingPic != null){
             Glide.with(this).load(bingPic).into(bingPicImg);
         }else {
@@ -133,7 +134,6 @@ public class WeatherActivity extends AppCompatActivity {
      * 根据天气id请求城市天气信息
      */
     public void requestWeather(final String weatherId){
-        mWeatherId = weatherId;
         String weatherUrl = "https://free-api.heweather.com/x3/weather?cityid=" + weatherId +
                 "&key=752518ccd72d4881acda1f2b5698ecde";
         HttpUtil.sendOKHttpRequest(weatherUrl, new Callback() {
@@ -171,7 +171,7 @@ public class WeatherActivity extends AppCompatActivity {
                 });
             }
         });
-        loadBingPic();
+        loadBingPic();  // 加载必应每日一图
     }
 
 
@@ -200,7 +200,7 @@ public class WeatherActivity extends AppCompatActivity {
             minText.setText(forecast.temperature.min);
             forecastLayout.addView(view);
             Log.d("WeatherActivity", forecast.date + forecast.more.info + forecast.temperature.max
-            + forecast.temperature.min + "  ");
+                    + forecast.temperature.min + "  ");
         }
 
         if (weather.aqi != null){
@@ -216,6 +216,12 @@ public class WeatherActivity extends AppCompatActivity {
         weatherLayout.setVisibility(View.VISIBLE);
         Intent intent = new Intent(this, AutoUpdateService.class);
         startService(intent);
+//        if (weather != null && "ok".equals(weather.status)) {
+//
+//        }else {
+//            Toast.makeText(WeatherActivity.this, "获取天气信息失败",
+//                    Toast.LENGTH_SHORT).show();
+//        }
     }
 
     /**
@@ -246,4 +252,10 @@ public class WeatherActivity extends AppCompatActivity {
         });
     }
 
+
+    public void onBackPressed(){
+        if (drawerLayout.isDrawerOpen(GravityCompat.START)){
+            drawerLayout.closeDrawers();
+        }
+    }
 }

@@ -10,7 +10,7 @@
         android:layout_marginLeft="15dp"
         android:layout_alignParentLeft="true"
         android:layout_centerVertical="true"
-        android:background="@drawable/ic_menu"/>
+        android:background="@drawable/ic_home"/>
 
     <TextView
         android:id="@+id/title_city"
