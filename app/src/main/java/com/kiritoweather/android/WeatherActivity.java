@@ -63,7 +63,13 @@ public class WeatherActivity extends AppCompatActivity {
 
     private TextView carWashText;
 
+    private TextView dressText;
+
     private TextView sportText;
+
+    private TextView tripText;
+
+    private TextView uvText;
 
     public String mWeatherId;
 
@@ -91,7 +97,11 @@ public class WeatherActivity extends AppCompatActivity {
         pm25Text = (TextView)findViewById(R.id.pm25_text);
         comfortText = (TextView)findViewById(R.id.comfort_text);
         carWashText = (TextView)findViewById(R.id.car_wash_text);
+        dressText = (TextView)findViewById(R.id.dress_clothes_text);
         sportText = (TextView)findViewById(R.id.sport_text);
+        tripText = (TextView)findViewById(R.id.trip_text);
+        uvText = (TextView)findViewById(R.id.uv_text);
+
         drawerLayout = (DrawerLayout)findViewById(R.id.drawer_layout);
         navButton = (Button)findViewById(R.id.nav_button);
         swipeRefresh = (SwipeRefreshLayout)findViewById(R.id.swipe_refresh);
@@ -133,6 +143,7 @@ public class WeatherActivity extends AppCompatActivity {
      * 根据天气id请求城市天气信息
      */
     public void requestWeather(final String weatherId){
+        Log.d("WeatherActivity",weatherId);
         String weatherUrl = "https://free-api.heweather.com/x3/weather?cityid=" + weatherId +
                 "&key=752518ccd72d4881acda1f2b5698ecde";
         HttpUtil.sendOKHttpRequest(weatherUrl, new Callback() {
@@ -206,19 +217,19 @@ public class WeatherActivity extends AppCompatActivity {
         }
         String comfort = "舒适度：" + weather.suggestion.comfort.info;
         String carWash = "洗车指数：" + weather.suggestion.carWash.info;
+        String dress = "穿衣建议：" + weather.suggestion.dress.info;
         String sport = "运动建议：" + weather.suggestion.sport.info;
+        String trip = "旅游建议：" + weather.suggestion.trip.info;
+        String uv = "紫外线强度：" + weather.suggestion.uv.info;
         comfortText.setText(comfort);
         carWashText.setText(carWash);
+        dressText.setText(dress);
         sportText.setText(sport);
+        tripText.setText(trip);
+        uvText.setText(uv);
         weatherLayout.setVisibility(View.VISIBLE);
         Intent intent = new Intent(this, AutoUpdateService.class);
         startService(intent);
-//        if (weather != null && "ok".equals(weather.status)) {
-//
-//        }else {
-//            Toast.makeText(WeatherActivity.this, "获取天气信息失败",
-//                    Toast.LENGTH_SHORT).show();
-//        }
     }
 
     /**
