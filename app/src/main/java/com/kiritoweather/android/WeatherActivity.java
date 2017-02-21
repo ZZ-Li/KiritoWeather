@@ -116,7 +116,6 @@ public class WeatherActivity extends AppCompatActivity {
             }
         });
         String bingPic = prefs.getString("bing_pic", null);
-        Log.d("WeatherActivity",bingPic);
         if (bingPic != null){
             Glide.with(this).load(bingPic).into(bingPicImg);
         }else {
@@ -199,8 +198,6 @@ public class WeatherActivity extends AppCompatActivity {
             maxText.setText(forecast.temperature.max);
             minText.setText(forecast.temperature.min);
             forecastLayout.addView(view);
-            Log.d("WeatherActivity", forecast.date + forecast.more.info + forecast.temperature.max
-                    + forecast.temperature.min + "  ");
         }
 
         if (weather.aqi != null){
@@ -256,6 +253,8 @@ public class WeatherActivity extends AppCompatActivity {
     public void onBackPressed(){
         if (drawerLayout.isDrawerOpen(GravityCompat.START)){
             drawerLayout.closeDrawers();
+        }else if (!drawerLayout.isDrawerOpen(GravityCompat.START)){
+            super.onBackPressed();
         }
     }
 }

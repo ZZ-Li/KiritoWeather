@@ -51,13 +51,12 @@ public class AutoUpdateService extends Service {
             // 有缓存时直接解析天气数据
             Weather weather = Utility.handleWeatherResponse(weatherString);
             final String weatherId = weather.basic.weatherId;
-
             String weatherUrl = "https://free-api.heweather.com/x3/weather?cityid=" + weatherId +
                     "&key=752518ccd72d4881acda1f2b5698ecde";
             HttpUtil.sendOKHttpRequest(weatherUrl, new Callback() {
                 @Override
                 public void onResponse(Call call, Response response) throws IOException {
-                    String responseText = response.body().toString();
+                    String responseText = response.body().string();
                     Weather weather = Utility.handleWeatherResponse(responseText);
                     if (weather != null && "ok".equals(weather.status)){
                         SharedPreferences.Editor editor = PreferenceManager
@@ -83,7 +82,7 @@ public class AutoUpdateService extends Service {
         HttpUtil.sendOKHttpRequest(requestBingPic, new Callback() {
             @Override
             public void onResponse(Call call, Response response) throws IOException {
-                String bingPic = response.body().toString();
+                String bingPic = response.body().string();
                 SharedPreferences.Editor editor = PreferenceManager
                         .getDefaultSharedPreferences(AutoUpdateService.this).edit();
                 editor.putString("bing_pic", bingPic);
