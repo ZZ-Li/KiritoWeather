@@ -144,7 +144,7 @@ public class WeatherActivity extends AppCompatActivity {
      */
     public void requestWeather(final String weatherId){
         Log.d("WeatherActivity",weatherId);
-        String weatherUrl = "https://free-api.heweather.com/x3/weather?cityid=" + weatherId +
+        String weatherUrl = "https://free-api.heweather.com/v5/weather?city=" + weatherId +
                 "&key=752518ccd72d4881acda1f2b5698ecde";
         HttpUtil.sendOKHttpRequest(weatherUrl, new Callback() {
             @Override
