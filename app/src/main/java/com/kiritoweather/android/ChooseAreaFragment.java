@@ -1,6 +1,7 @@
 package com.kiritoweather.android;
 
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -15,18 +16,15 @@ import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
 
-
 import com.kiritoweather.android.db.City;
 import com.kiritoweather.android.db.County;
 import com.kiritoweather.android.db.Province;
-import com.kiritoweather.android.gson.Weather;
 import com.kiritoweather.android.util.HttpUtil;
 import com.kiritoweather.android.util.Utility;
 
 import org.litepal.crud.DataSupport;
 
 import java.io.IOException;
-import java.io.StringReader;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -87,6 +85,20 @@ public class ChooseAreaFragment extends Fragment {
      */
     private int currentLevel;
 
+    private ChooseAreaListener listener;
+
+    public interface ChooseAreaListener {
+        void onChoose(String weatherId);
+    }
+
+    @Override
+    public void onAttach(Context context) {
+        super.onAttach(context);
+        if (context instanceof ChooseAreaListener){
+            listener = (ChooseAreaListener)context;
+        }
+    }
+
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.choose_area, container, false);
@@ -95,6 +107,7 @@ public class ChooseAreaFragment extends Fragment {
         listView = (ListView)view.findViewById(R.id.list_view);
         adapter = new ArrayAdapter<>(getContext(), android.R.layout.simple_list_item_1, dataList);
         listView.setAdapter(adapter);
+
         return view;
     }
 
@@ -113,16 +126,22 @@ public class ChooseAreaFragment extends Fragment {
                 }else if (currentLevel == LEVEL_COUNTY){
                     String weatherId = countyList.get(position).getWeatherId();
                     if (getActivity() instanceof MainActivity){
+                        Log.d("ChooseAreaFragment", getActivity().toString());
                         Intent intent = new Intent(getContext(), WeatherActivity.class);
                         intent.putExtra("weather_id", weatherId);
                         startActivity(intent);
                         getActivity().finish();
                     }else if (getActivity() instanceof WeatherActivity){
-                        WeatherActivity activity = (WeatherActivity)getActivity();
-                        activity.drawerLayout.closeDrawers();
-                        activity.swipeRefresh.setRefreshing(true);
-                        activity.mWeatherId = weatherId;
-                        activity.requestWeather(weatherId);
+                        //Log.d("ChooseAreaFragment", weatherId);
+                        listener.onChoose(weatherId);
+
+//                        WeatherActivity activity = (WeatherActivity)getActivity();
+//                        activity.drawerLayout.closeDrawers();
+//                        WeatherFragment weatherFragment = (WeatherFragment)activity.fragmentAdapter
+//                                .getItem(activity.viewPager.getCurrentItem());
+//                        listener = weatherFragment.mListener;
+//                        weatherFragment.mWeatherId = weatherId;
+//                        weatherFragment.requestWeather(weatherId);
                     }
                 }
             }
@@ -138,6 +157,8 @@ public class ChooseAreaFragment extends Fragment {
             }
         });
         queryProvinces();
+
+
     }
 
     /**
@@ -274,6 +295,14 @@ public class ChooseAreaFragment extends Fragment {
     private void closeProgressDialog(){
         if (progressDialog != null){
             progressDialog.dismiss();
+        }
+    }
+
+    public void onBack(){
+        if (currentLevel == LEVEL_COUNTY){
+            queryCities();
+        }else if (currentLevel == LEVEL_CITY){
+            queryProvinces();
         }
     }
 
